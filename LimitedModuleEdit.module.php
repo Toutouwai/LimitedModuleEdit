@@ -7,7 +7,7 @@ class LimitedModuleEdit extends WireData implements Module, ConfigurableModule {
 	 */
 	public function ready() {
 		$this->addHookAfter('AdminThemeFramework::getPrimaryNavArray', $this, 'afterPrimaryNavArray');
-		$this->addHookAfter('ProcessController::execute', $this, 'beforeProcessController');
+		$this->addHookBefore('ProcessController::execute', $this, 'beforeProcessController');
 		$this->addHookBefore('ProcessModule::executeEdit', $this, 'beforeModuleEdit');
 		$this->addHookBefore('Modules::saveConfig', $this, 'beforeSaveConfig');
 	}
@@ -110,6 +110,7 @@ class LimitedModuleEdit extends WireData implements Module, ConfigurableModule {
 
 		// Only the edit method is allowed
 		if($method !== 'executeEdit') {
+			$event->replace = true;
 			$event->return = $error_notice;
 		}
 
@@ -117,6 +118,7 @@ class LimitedModuleEdit extends WireData implements Module, ConfigurableModule {
 		$module_name = $this->wire()->input->get('name');
 		$p_name = $this->getPermissionName($module_name);
 		if(!$user->hasPermission($p_name)) {
+			$event->replace = true;
 			$event->return = $error_notice;
 		}
 	}
