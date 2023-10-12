@@ -28,7 +28,6 @@ class LimitedModuleEdit extends WireData implements Module, ConfigurableModule {
 		$modules_title = '';
 		foreach($nav_items as $key => $item) {
 			if($item['id'] === 21) {
-				$modules_title = $item['title'];
 				unset($nav_items[$key]);
 			}
 		}
@@ -54,7 +53,7 @@ class LimitedModuleEdit extends WireData implements Module, ConfigurableModule {
 				'id' => -1,
 				'parent_id' => 0,
 				'name' => '',
-				'title' => $modules_title ?: $this->_('Modules'),
+				'title' => $this->_x('Modules', $this->className),
 				'url' => '#', // Top-level menu item is not navigable
 				'icon' => '',
 				'children' => [],
@@ -66,7 +65,7 @@ class LimitedModuleEdit extends WireData implements Module, ConfigurableModule {
 					'parent_id' => 0,
 					'name' => '',
 					'title' => $name,
-					'url' => $base . $name,
+					'url' => $base . $name . '&collapse_info=1',
 					'icon' => $icon,
 					'children' => [],
 					'navJSON' => '',
