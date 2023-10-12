@@ -33,6 +33,11 @@ class LimitedModuleEdit extends WireData implements Module, ConfigurableModule {
 			}
 		}
 
+		if($this->noMenu) {
+			$event->return = $nav_items;
+			return;
+		}
+
 		// Are there any modules this user is allowed to configure?
 		$user_configurable = [];
 		foreach($this->lmeConfigurable as $item) {
@@ -163,6 +168,16 @@ class LimitedModuleEdit extends WireData implements Module, ConfigurableModule {
 		}
 		$f->optionWidth = 300;
 		$f->value = $this->$f_name;
+		$inputfields->add($f);
+
+		/** @var InputfieldCheckbox $f */
+		$f = $modules->get('InputfieldCheckbox');
+		$f_name = 'noMenu';
+		$f->name = $f_name;
+		$f->label = $this->_("Don't show a Modules menu");
+		$f->description = $this->_('May be useful if you are providing alternative links to edit the allowed modules.');
+		$f->checked = $this->$f_name === 1 ? 'checked' : '';
+		$f->collapsed = Inputfield::collapsedBlank;
 		$inputfields->add($f);
 	}
 
