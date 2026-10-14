@@ -136,6 +136,8 @@ class LimitedModuleEdit extends WireData implements Module, ConfigurableModule {
 	protected function beforeModuleEdit(HookEvent $event) {
 		// Only applicable to non-superusers
 		if($this->wire()->user->isSuperuser()) return;
+		// Ignore a posted uninstall request
+		$this->wire()->input->post->remove('uninstall');
 		// Remove the uninstall checkbox
 		$event->wire()->addHookBefore('InputfieldForm::render', function(HookEvent $event2) {
 			/** @var InputfieldForm $form */
